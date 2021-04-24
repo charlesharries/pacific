@@ -7,34 +7,11 @@
 </head>
 
 <body>
-  <nav>
-    {{ if not .User.Email }}
-    <p>Not logged in</p>
-    {{ else }}
-    <p>Logged in as {{ .User.Email }}</p>
-    {{ end }}
-
-    <ul>
-      <li>
-        <a href="/">Home</a>
-      </li>
-      <li>
-        <a href="/register">Register</a>
-      </li>
-      <li>
-        {{ if not .User.Email }}
-        <a href="/login">Login</a>
-        {{ else }}
-        <form method="POST" action="/logout">
-          <input type='hidden' name='csrf_token' value='{{ .CSRFToken }}'>
-          <button type="submit">Logout</button>
-        </form>
-        {{ end }}
-      </li>
-    </ul>
-  </nav>
+  {{ template "nav" . }}
 
   <main>
+    {{ template "flash" . }}
+    
     {{ template "main" . }}
   </main>
 </body>

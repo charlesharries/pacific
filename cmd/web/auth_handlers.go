@@ -81,12 +81,14 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Fetch the user from the DB
 	user, err := app.users.Get(id)
 	if err != nil {
 		app.serverError(w, err)
 		return
 	}
 
+	// Save the user to the session
 	app.session.Put(r, "authenticatedUser", &TemplateUser{
 		ID:    user.ID,
 		Email: user.Email,

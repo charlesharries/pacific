@@ -38,7 +38,7 @@ func (app *application) addDefaultData(td *templateData, r *http.Request) *templ
 
 	td.CSRFToken = nosurf.Token(r)
 	// td.CurrentYear = time.Now().Year()
-	// td.Flash = app.session.PopString(r, "flash")
+	td.Flash = app.session.PopString(r, "flash")
 	td.IsAuthenticated = app.isAuthenticated(r)
 
 	if app.session.Exists(r, "authenticatedUser") {
@@ -67,6 +67,7 @@ func (app *application) render(w http.ResponseWriter, r *http.Request, name stri
 	buf.WriteTo(w)
 }
 
+// isAuthenticated checks if the user is currently logged in.
 func (app *application) isAuthenticated(r *http.Request) bool {
 	isAuthenticated, ok := r.Context().Value(contextKeyIsAuthenticated).(bool)
 	if !ok {
@@ -74,4 +75,9 @@ func (app *application) isAuthenticated(r *http.Request) bool {
 	}
 
 	return isAuthenticated
+}
+
+// currentUser returns the currently logged-in user.
+func (app *application) currentUser(r *http.Request) TemplateUser {
+	return app.session.Get(r, "authenticatedUser").(TemplateUser)
 }

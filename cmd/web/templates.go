@@ -12,6 +12,7 @@ type templateData struct {
 	CSRFToken       string
 	Form            *forms.Form
 	IsAuthenticated bool
+	Flash           string
 	User            TemplateUser
 }
 

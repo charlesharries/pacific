@@ -6,9 +6,12 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
-    "types": [
-      "node"
-    ],
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "react": ["node_modules/preact/compat"],
+      "react-dom": ["node_modules/preact/compat"],
+    },
     "noUnusedLocals": false,
     "esModuleInterop": true,
     "downlevelIteration": true,

@@ -1,0 +1,21 @@
+{{ template "app" . }}
+
+{{ define "main" }}
+<h1>Login page</h1>
+
+<form method="POST" action="/login">
+  <input type='hidden' name='csrf_token' value='{{ .CSRFToken }}'>
+
+  <div>
+    <label for="email">Email</label>
+    <input type="email" name="email">
+  </div>
+
+  <div>
+    <label for="password">Password</label>
+    <input type="password" name="password">
+  </div>
+
+  <button type="submit">Login</button>
+</form>
+{{ end }}

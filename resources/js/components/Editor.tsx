@@ -1,7 +1,9 @@
-import { useMemo, useState } from 'preact/hooks';
+import { useEffect, useMemo, useState } from 'preact/hooks';
 import { JSX } from 'preact/jsx-runtime';
 import { createEditor, BaseEditor, Descendant } from 'slate';
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
+import { useStatus } from '../lib/status';
+import useDebounce from '../lib/useDebounce';
 
 type CustomText = { text: string };
 type CustomElement = { type: 'paragraph'; children: CustomText[] };
@@ -15,6 +17,7 @@ declare module 'slate' {
 }
 
 export default function Editor(): JSX.Element {
+  const { status, setStatus } = useStatus();
   const editor = useMemo(() => withReact(createEditor()), []);
   const [value, setValue] = useState<Descendant[]>([
     {
@@ -22,14 +25,26 @@ export default function Editor(): JSX.Element {
       children: [{ text: 'A line of text in a paragraph' }],
     },
   ]);
+  const debouncedValue = useDebounce<Descendant[]>(value, 1000);
 
-  function handleChange(newValue: Descendant[]): void {
-    setValue(newValue);
-  }
+  useEffect(() => {
+    if (debouncedValue) {
+      setStatus('loading');
+
+      // Save the debouncedValue to the database
+
+      setTimeout(() => {
+        setStatus('success');
+      }, 1000);
+    }
+  }, [debouncedValue, setStatus]);
 
   return (
-    <Slate editor={editor} value={value} onChange={handleChange}>
-      <Editable />
-    </Slate>
+    <>
+      <p>Status: {status}</p>
+      <Slate editor={editor} value={value} onChange={(val) => setValue(val)}>
+        <Editable />
+      </Slate>
+    </>
   );
 }

@@ -32,6 +32,16 @@ func humanDate(t time.Time) string {
 	return t.UTC().Format("02 Jan 2006 at 15:04")
 }
 
+// timestamp gets the current Unix timestamp
+func timestamp() int64 {
+	return time.Now().Unix()
+}
+
+var functions = template.FuncMap{
+	"timestamp": timestamp,
+	"humanDate": humanDate,
+}
+
 func newTemplateCache(dir string) (map[string]*template.Template, error) {
 	cache := map[string]*template.Template{}
 
@@ -43,7 +53,7 @@ func newTemplateCache(dir string) (map[string]*template.Template, error) {
 	for _, page := range pages {
 		name := filepath.Base(page)
 
-		ts, err := template.New(name).ParseFiles(page)
+		ts, err := template.New(name).Funcs(functions).ParseFiles(page)
 		if err != nil {
 			return nil, err
 		}

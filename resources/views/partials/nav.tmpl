@@ -11,20 +11,20 @@
         <a href="/">Home</a>
       </li>
 
-      <li>
-        <a href="/register">Register</a>
-      </li>
-      
-      <li>
-        {{ if not .User.Email }}
+      {{ if not .User.Email }}
+        <li>
+          <a href="/register">Register</a>
+        </li>
+
+        <li>
           <a href="/login">Login</a>
-        {{ else }}
-          <form method="POST" action="/logout">
-            <input type='hidden' name='csrf_token' value='{{ .CSRFToken }}'>
-            <button type="submit">Logout</button>
-          </form>
-        {{ end }}
-      </li>
+        </li>
+      {{ else }}
+        <form method="POST" action="/logout">
+          <input type='hidden' name='csrf_token' value='{{ .CSRFToken }}'>
+          <button type="submit">Logout</button>
+        </form>
+      {{ end }}
     </ul>
   </nav>
 {{ end }}

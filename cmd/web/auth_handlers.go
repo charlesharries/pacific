@@ -47,7 +47,6 @@ func (app *application) register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	app.session.Put(r, "flash", "Successfully registered. Please log in.")
-
 	http.Redirect(w, r, "/login", http.StatusSeeOther)
 }
 
@@ -94,6 +93,7 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 		Email: user.Email,
 	})
 
+	app.session.Put(r, "flash", "You've been logged in.")
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 

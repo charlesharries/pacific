@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useRef, useEffect, Inputs, EffectCallback } from 'preact/hooks';
+import { useRef, useEffect, DependencyList, EffectCallback } from 'react';
 
-export default function useSubsequentEffect(fn: EffectCallback, inputs: Inputs): void {
+export default function useSubsequentEffect(fn: EffectCallback, inputs: DependencyList): void {
   const mounted = useRef(false);
 
   useEffect(() => {

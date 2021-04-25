@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useEffect } from 'react';
 
 export default function useDebounce<S>(value: S, delay: number): S {
   const [debouncedValue, setDebouncedValue] = useState(value);

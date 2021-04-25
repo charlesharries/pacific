@@ -1,5 +1,4 @@
-import { ComponentChildren, createContext, JSX } from 'preact';
-import { useContext, useState } from 'preact/hooks';
+import { createContext, ReactChildren, useContext, useState } from 'react';
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
@@ -15,7 +14,7 @@ function useProvideStatus(): StatusContext {
 }
 
 type StatusProviderProps = {
-  children: ComponentChildren;
+  children: JSX.Element;
 };
 
 const statusContext = createContext<StatusContext>(null!);

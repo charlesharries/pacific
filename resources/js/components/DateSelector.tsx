@@ -1,4 +1,3 @@
-import { JSX } from 'preact/jsx-runtime';
 import { useDate } from '../lib/date';
 
 export default function DateSelector(): JSX.Element {
@@ -28,7 +27,7 @@ export default function DateSelector(): JSX.Element {
     <div className="DateSelector">
       <ul className="DateSelector__dates">
         {thisWeek().map((day) => (
-          <li>
+          <li key={day.valueOf()}>
             <button type="button" onClick={() => setCurrent(day)}>
               {day.toDateString()}
             </button>

@@ -1,17 +1,42 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"regexp"
 	"time"
 
 	"github.com/charlesharries/pacific/pkg/forms"
 	"github.com/charlesharries/pacific/pkg/models"
+	"gorm.io/gorm/clause"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	app.render(w, r, "home.tmpl", &templateData{})
+}
+
+// getNote gets the note for the given date (if any).
+func (app *application) getNote(w http.ResponseWriter, r *http.Request) {
+	d := r.URL.Query().Get(":date")
+
+	reg := regexp.MustCompile(`\d{4}-\d{2}-\d{2}`)
+	if !reg.MatchString(d) {
+		app.notFound(w)
+		return
+	}
+
+	date, err := time.Parse("2006-01-02", d)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	var note = &models.Note{}
+
+	app.gorm.FirstOrCreate(&note, &models.Note{
+		Date: date,
+	})
+
+	app.apiNote(w, note)
 }
 
 func (app *application) updateNote(w http.ResponseWriter, r *http.Request) {
@@ -37,15 +62,16 @@ func (app *application) updateNote(w http.ResponseWriter, r *http.Request) {
 
 	form := forms.New(r.PostForm)
 
-	fmt.Printf("%#v", form.Get("content"))
-
 	form.Required("content")
 	if !form.Valid() {
 		app.clientError(w, http.StatusBadRequest)
 		return
 	}
 
-	app.gorm.FirstOrCreate(&models.Note{
+	app.gorm.Clauses(clause.OnConflict{
+		Columns:   []clause.Column{{Name: "date"}},
+		DoUpdates: clause.AssignmentColumns([]string{"content", "user_id"}),
+	}).Create(&models.Note{
 		Date:    date,
 		Content: form.Get("content"),
 		UserID:  app.currentUser(r).ID,

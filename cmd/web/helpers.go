@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"runtime/debug"
 
+	"github.com/charlesharries/pacific/pkg/models"
 	"github.com/justinas/nosurf"
 )
 
@@ -90,6 +91,16 @@ func (app *application) apiOK(w http.ResponseWriter) {
 	}
 
 	js, err := json.Marshal(ok)
+	if err != nil {
+		app.serverError(w, err)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(js)
+}
+
+func (app *application) apiNote(w http.ResponseWriter, note *models.Note) {
+	js, err := json.Marshal(note)
 	if err != nil {
 		app.serverError(w, err)
 	}

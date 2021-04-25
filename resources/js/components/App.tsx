@@ -3,6 +3,7 @@ import { DateProvider } from '../lib/date';
 import { StatusProvider } from '../lib/status';
 import DateSelector from './DateSelector';
 import Editor from './Editor';
+import StatusIndicator from './StatusIndicator';
 
 export function App(): JSX.Element {
   return (
@@ -10,6 +11,8 @@ export function App(): JSX.Element {
       <StatusProvider>
         <div className="App">
           <DateSelector />
+
+          <StatusIndicator />
 
           <Editor />
         </div>

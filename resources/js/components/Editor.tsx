@@ -38,6 +38,8 @@ type ApiNote = {
   date: string;
 };
 
+const emptyEditor: Descendant[] = [{ type: 'paragraph', children: [{ text: '' }] }];
+
 function csrfToken(): string {
   const $meta: HTMLMetaElement | null = document.querySelector('meta[name="csrf_token"]');
 
@@ -45,7 +47,7 @@ function csrfToken(): string {
 }
 
 export default function Editor(): JSX.Element {
-  const { status, setStatus } = useStatus();
+  const { setStatus } = useStatus();
   const { current } = useDate();
   const editor = useMemo(() => withReact(createEditor()), []);
   const [value, setValue] = useState<Descendant[]>([]);
@@ -55,21 +57,26 @@ export default function Editor(): JSX.Element {
   useEffect(() => {
     setStatus('loading');
 
+    setValue(emptyEditor);
+
     fetch(`/notes/${dateString(current)}`, {
       credentials: 'include',
     })
       .then((r) => r.json())
       .then((r: ApiNote) => {
-        setValue(JSON.parse(r.content) as Descendant[]);
+        if (r.content) {
+          setValue(JSON.parse(r.content) as Descendant[]);
+        }
+
+        setStatus('success');
       });
-  }, []);
+  }, [current, setStatus]);
 
   // Handle saves
   useSubsequentEffect(() => {
-    if (debouncedValue) {
+    if (debouncedValue && debouncedValue.length) {
       setStatus('loading');
 
-      // Save the debouncedValue to the database
       try {
         (async () => {
           const formBody = new URLSearchParams();
@@ -96,11 +103,10 @@ export default function Editor(): JSX.Element {
         setStatus('error');
       }
     }
-  }, [current, debouncedValue, setStatus]);
+  }, [debouncedValue, setStatus]);
 
   return (
     <>
-      <p>Status: {status}</p>
       <Slate editor={editor} value={value} onChange={(val) => setValue(val)}>
         <Editable />
       </Slate>

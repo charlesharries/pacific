@@ -32,8 +32,9 @@ func (app *application) getNote(w http.ResponseWriter, r *http.Request) {
 
 	var note = &models.Note{}
 
-	app.gorm.FirstOrCreate(&note, &models.Note{
-		Date: date,
+	app.gorm.First(&note, &models.Note{
+		Date:   date,
+		UserID: app.currentUser(r).ID,
 	})
 
 	app.apiNote(w, note)

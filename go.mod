@@ -10,4 +10,6 @@ require (
 	github.com/justinas/nosurf v1.1.1
 	github.com/mattn/go-sqlite3 v1.14.7
 	golang.org/x/crypto v0.0.0-20200317142112-1b76d66859c6
+	gorm.io/driver/sqlite v1.1.4
+	gorm.io/gorm v1.21.8
 )

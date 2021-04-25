@@ -3,6 +3,8 @@ package models
 import (
 	"errors"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 // ErrNoRecord displays if a user requests a non-existent resource.
@@ -25,8 +27,10 @@ type User struct {
 }
 
 type Note struct {
+	gorm.Model
 	ID        int
 	UserID    int
+	User      User
 	Date      time.Time
 	UpdatedAt time.Time
 	Content   string

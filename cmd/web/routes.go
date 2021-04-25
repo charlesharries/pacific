@@ -23,6 +23,8 @@ func (app *application) routes() http.Handler {
 	mux.Post("/login", dynamicMiddleware.ThenFunc(app.login))
 	mux.Post("/logout", dynamicMiddleware.ThenFunc(app.logout))
 
+	// Note routes
+	mux.Post("/notes/:date", dynamicMiddleware.ThenFunc(http.HandlerFunc(app.updateNote)))
 
 	fileServer := http.FileServer(http.Dir("./public"))
 	mux.Get("/static/", http.StripPrefix("/static", fileServer))

@@ -20,9 +20,11 @@ var userStatement = `create table if not exists "users" (
 
 var notesStatement = `create table if not exists "notes" (
 	"id" integer not null primary key autoincrement,
+	"user_id" integer not null ,
 	"date" datetime not null default "",
 	"updated_at" datetime null,
-	"content" text not null default "[]"
+	"content" text not null default "[]",
+	foreign key(user_id) references users(id)
 );`
 
 func main() {

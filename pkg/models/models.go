@@ -23,3 +23,11 @@ type User struct {
 	Created  time.Time
 	Active   bool
 }
+
+type Note struct {
+	ID        int
+	UserID    int
+	Date      time.Time
+	UpdatedAt time.Time
+	Content   string
+}

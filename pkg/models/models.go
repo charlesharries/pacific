@@ -3,6 +3,8 @@ package models
 import (
 	"errors"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 // ErrNoRecord displays if a user requests a non-existent resource.
@@ -22,4 +24,14 @@ type User struct {
 	Password []byte
 	Created  time.Time
 	Active   bool
+}
+
+type Note struct {
+	gorm.Model
+	ID        int `json:"id"`
+	UserID    int `json:"user_id"`
+	User      User
+	Date      time.Time `gorm:"uniqueIndex"`
+	UpdatedAt time.Time `json:"updated_at"`
+	Content   string    `json:"content"`
 }

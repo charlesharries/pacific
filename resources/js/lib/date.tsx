@@ -1,5 +1,6 @@
-import { ComponentChildren, createContext, JSX } from 'preact';
-import { StateUpdater, useContext, useState } from 'preact/hooks';
+import { createContext, ReactChildren, useContext, useState } from 'react';
+
+export type StateUpdater<T> = React.Dispatch<React.SetStateAction<T>>;
 
 type DateContext = {
   current: Date;
@@ -28,8 +29,17 @@ function useProvideDate(): DateContext {
   return { current, viewing, viewNext, viewPrev, setCurrent };
 }
 
+export function dateString(date: Date): string {
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const prefix = (num: number): string => (num < 10 ? `0${num}` : `${num}`);
+
+  return `${year}-${prefix(month)}-${prefix(day)}`;
+}
+
 type DateProviderProps = {
-  children: ComponentChildren;
+  children: JSX.Element;
 };
 
 const dateContext = createContext<DateContext>(null!);

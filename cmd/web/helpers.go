@@ -2,10 +2,12 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"runtime/debug"
 
+	"github.com/charlesharries/pacific/pkg/models"
 	"github.com/justinas/nosurf"
 )
 
@@ -80,4 +82,29 @@ func (app *application) isAuthenticated(r *http.Request) bool {
 // currentUser returns the currently logged-in user.
 func (app *application) currentUser(r *http.Request) TemplateUser {
 	return app.session.Get(r, "authenticatedUser").(TemplateUser)
+}
+
+func (app *application) apiOK(w http.ResponseWriter) {
+	ok := map[string]interface{}{
+		"error":   false,
+		"message": "ok",
+	}
+
+	js, err := json.Marshal(ok)
+	if err != nil {
+		app.serverError(w, err)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(js)
+}
+
+func (app *application) apiNote(w http.ResponseWriter, note *models.Note) {
+	js, err := json.Marshal(note)
+	if err != nil {
+		app.serverError(w, err)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(js)
 }

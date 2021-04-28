@@ -5,10 +5,8 @@
   ],
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "preact",
-    "types": [
-      "node"
-    ],
+    "jsxImportSource": "react",
+    "types": ["node"],
     "noUnusedLocals": false,
     "esModuleInterop": true,
     "downlevelIteration": true,

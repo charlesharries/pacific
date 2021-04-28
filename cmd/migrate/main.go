@@ -18,6 +18,15 @@ var userStatement = `create table if not exists "users" (
 	"active" boolean not null check (active in (0, 1)) default 0
 );`
 
+var notesStatement = `create table if not exists "notes" (
+	"id" integer not null primary key autoincrement,
+	"user_id" integer not null ,
+	"date" datetime not null default "",
+	"updated_at" datetime null,
+	"content" text not null default "[]",
+	foreign key(user_id) references users(id)
+);`
+
 func main() {
 	err := godotenv.Load()
 	if err != nil {
@@ -30,6 +39,11 @@ func main() {
 	}
 
 	_, err = db.Exec(userStatement)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	_, err = db.Exec(notesStatement)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -1,5 +1,5 @@
-import 'preact/debug';
-import ReactDOM, { createElement } from 'preact/compat';
+import { createElement } from 'react';
+import ReactDOM from 'react-dom';
 import { App } from './components/App';
 
 const $root = document.getElementById('root');

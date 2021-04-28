@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 
 	"github.com/charlesharries/pacific/pkg/forms"
@@ -69,7 +68,6 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 
 	id, err := app.users.Authenticate(form.Get("email"), form.Get("password"))
 	if err != nil {
-		fmt.Printf("%#v\n%#v", form.Get("email"), form.Get("password"))
 		if errors.Is(err, models.ErrInvalidCredentials) {
 			form.Errors.Add("generic", "Email or password is incorrect.")
 			app.render(w, r, "login.tmpl", &templateData{Form: form})

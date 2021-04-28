@@ -35,7 +35,7 @@ export default function useAutosave(value: string): void {
       try {
         (async () => {
           const formBody = new URLSearchParams();
-          formBody.append('content', JSON.stringify(debouncedValue));
+          formBody.append('content', debouncedValue);
           formBody.append('csrf_token', csrfToken);
 
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

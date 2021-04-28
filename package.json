@@ -5,7 +5,7 @@
   "author": "Charles Harries <charles@harries.me>",
   "license": "MIT",
   "scripts": {
-    "dev": "esbuild ./resources/js/index.js --sourcemap --inject:./resources/js/process-shim.js '--define:process.env.NODE_ENV=\"development\"' '--define:process.env.NODE_DEBUG=false' '--define:global=window' --watch --bundle --outfile=public/index.js",
+    "dev": "node build.js",
     "build": "esbuild ./resources/js/index.js --bundle --outfile=public/index.js"
   },
   "devDependencies": {
@@ -15,6 +15,7 @@
     "@typescript-eslint/eslint-plugin": "^4.4.1",
     "@typescript-eslint/parser": "^4.4.1",
     "esbuild": "^0.11.14",
+    "esbuild-plugin-sass": "^0.5.0",
     "eslint": "^7.8.1",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-airbnb-typescript": "^11.0.0",

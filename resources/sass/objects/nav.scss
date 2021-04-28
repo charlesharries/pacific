@@ -1,0 +1,35 @@
+.Nav {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  border-right: 1px solid var(--border);
+}
+
+.Nav__list {
+  flex: 1;
+  list-style: none;
+
+  li {
+    color: var(--text);
+
+    a {
+      text-decoration: none;
+    }
+
+    & + li {
+      margin-top: 1rem;
+    }
+  }
+}
+
+.Nav__link {
+  cursor: pointer;
+
+  &:hover {
+    color: rgba(var(--color), 0.8);
+  }
+}
+
+.Nav__user {
+  border-top: 1px solid var(--border);
+}

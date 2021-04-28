@@ -3,8 +3,8 @@
 }
 
 html {
-  height: 100%;
   width: 100%;
+  height: 100%;
 }
 
 html:focus-within {
@@ -12,11 +12,18 @@ html:focus-within {
 }
 
 img {
-  max-width: 100%;
   display: block;
+  max-width: 100%;
 }
 
-input, button, textarea, select {
+a {
+  color: inherit;
+}
+
+input,
+button,
+textarea,
+select {
   font: inherit;
 }
 
@@ -26,7 +33,7 @@ input, button, textarea, select {
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }

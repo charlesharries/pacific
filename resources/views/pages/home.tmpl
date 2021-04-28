@@ -1,7 +1,9 @@
 {{ template "app" . }}
 
 {{ define "main" }}
-<h1>Home page</h1>
-
-<div id="root"></div>
+  {{ if .User.Email }}
+    <div id="root"></div>
+  {{ else }}
+    <p>Please log in to use the app.</p>
+  {{ end }}
 {{ end }}

@@ -20,17 +20,14 @@
       }
     ],
     "jsx-a11y/no-redundant-roles": "off",
-    "react/jsx-filename-extension": [
-      2,
-      {
-        "extensions": [
-          ".js",
-          ".jsx",
-          ".ts",
-          ".tsx"
-        ]
-      }
-    ],
+    "react/jsx-filename-extension": [2, {
+      "extensions": [
+        ".js",
+        ".jsx",
+        ".ts",
+        ".tsx"
+      ]
+    }],
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-floating-promises": "off",
     "react/jsx-props-no-spreading": "off"

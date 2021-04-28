@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "node build.js",
-    "build": "esbuild ./resources/js/index.js --bundle --outfile=public/index.js"
+    "build": "node build.production.js"
   },
   "devDependencies": {
     "@types/node": "^14.14.10",

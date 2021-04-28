@@ -24,3 +24,9 @@ body {
 .Main {
   flex: 1;
 }
+
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}

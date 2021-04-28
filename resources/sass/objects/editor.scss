@@ -1,0 +1,62 @@
+.Editor {
+  flex: 1;
+  overflow: auto;
+
+  .checkbox_list span[contenteditable] {
+    position: relative;
+    top: -2px;
+  }
+
+  .ProseMirror {
+    & > * {
+      & + h1,
+      & + h2,
+      & + h3,
+      & + p,
+      & + ul,
+      & + ol,
+      & + button {
+        margin-top: 1rem;
+      }
+    }
+
+    h1,
+    h2,
+    h3 {
+      & + * {
+        margin-top: 0;
+      }
+    }
+
+    h1 {
+      font-size: 3.2rem;
+    }
+
+    h2 {
+      padding-bottom: 1rem;
+      margin-top: 4rem;
+      margin-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h3 {
+      margin-top: 2rem;
+      margin-bottom: 0.3rem;
+    }
+
+    & > * + .checkbox_list {
+      margin-top: 0.75rem;
+    }
+  }
+}
+
+.Editor__inner {
+  width: 100%;
+  max-width: 660px;
+  padding-top: 4rem;
+  padding-right: 3rem;
+  padding-bottom: 50vh;
+  padding-left: 3rem;
+  margin-right: auto;
+  margin-left: auto;
+}

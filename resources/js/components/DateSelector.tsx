@@ -1,9 +1,13 @@
+import useHistory from '../hooks/useHistory';
 import { useDate, humanDate, humanDayOfWeek } from '../lib/date';
 import Next from './icons/Next';
 import { Prev } from './icons/Prev';
+import StatusIndicator from './StatusIndicator';
 
 export default function DateSelector(): JSX.Element {
   const { current, viewing, viewNext, viewPrev, setCurrent, viewToday } = useDate();
+
+  useHistory();
 
   /**
    * Get this week as an array of dates.
@@ -43,7 +47,9 @@ export default function DateSelector(): JSX.Element {
    */
   function isPast(day: Date): boolean {
     const today = new Date();
-    today.setHours(0);
+    today.setHours(0, 0, 0, 0);
+
+    console.log({ day, today });
 
     return day.getTime() < today.getTime();
   }
@@ -95,11 +101,13 @@ export default function DateSelector(): JSX.Element {
         </button>
       </div>
 
-      <div className="DateSelector__today ml-md">
+      <div className="DateSelector__today ml-md mr-md">
         <button type="button" className="button" onClick={viewToday}>
           Today
         </button>
       </div>
+
+      <StatusIndicator />
     </div>
   );
 }

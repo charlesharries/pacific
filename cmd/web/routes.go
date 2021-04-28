@@ -27,6 +27,7 @@ func (app *application) routes() http.Handler {
 
 	app.newMiddlewareGroup(mux, dynamicMiddleware, func(r *middlewareGroup) {
 		r.Get("/", app.home)
+		r.Get("/:date", app.home)
 		r.Get("/register", app.registerForm)
 		r.Post("/register", app.register)
 		r.Get("/login", app.loginForm)

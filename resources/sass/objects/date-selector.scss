@@ -21,6 +21,7 @@
 
 .DateSelector__date {
   position: relative;
+  line-height: 1.2;
 
   &::after {
     content: '';

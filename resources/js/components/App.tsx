@@ -12,8 +12,6 @@ export function App(): JSX.Element {
         <div className="App">
           <DateSelector />
 
-          <StatusIndicator />
-
           <Editor />
         </div>
       </StatusProvider>

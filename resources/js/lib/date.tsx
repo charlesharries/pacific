@@ -11,9 +11,30 @@ type DateContext = {
   setCurrent: StateUpdater<Date>;
 };
 
+/**
+ * Turn the current URL into a date. If no date is in the URL, just
+ * return the current date.
+ *
+ * @returns {Date}
+ */
+export function dateFromUrl(): Date {
+  const url = new URL(window.location.toString());
+  const date = url.pathname;
+
+  if (Number.isNaN(Date.parse(date))) {
+    return new Date();
+  }
+
+  return new Date(date);
+}
+
+type DateProviderProps = {
+  children: JSX.Element;
+};
+
 function useProvideDate(): DateContext {
-  const [current, setCurrent] = useState<Date>(new Date());
-  const [viewing, setViewing] = useState<Date>(new Date());
+  const [current, setCurrent] = useState<Date>(dateFromUrl());
+  const [viewing, setViewing] = useState<Date>(dateFromUrl());
 
   function viewNext() {
     const to = new Date(viewing.valueOf());
@@ -29,7 +50,7 @@ function useProvideDate(): DateContext {
 
   function viewToday() {
     const today = new Date();
-    today.setHours(0);
+    today.setHours(0, 0, 0, 0);
 
     setCurrent(today);
     setViewing(today);
@@ -82,10 +103,6 @@ export function isSameDay(day1: Date, day2: Date): boolean {
     day1.getDate() === day2.getDate()
   );
 }
-
-type DateProviderProps = {
-  children: JSX.Element;
-};
 
 const dateContext = createContext<DateContext>(null!);
 

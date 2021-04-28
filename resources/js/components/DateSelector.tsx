@@ -1,4 +1,6 @@
 import { useDate, humanDate, humanDayOfWeek } from '../lib/date';
+import Next from './icons/Next';
+import { Prev } from './icons/Prev';
 
 export default function DateSelector(): JSX.Element {
   const { current, viewing, viewNext, viewPrev, setCurrent, viewToday } = useDate();
@@ -43,7 +45,7 @@ export default function DateSelector(): JSX.Element {
     const today = new Date();
     today.setHours(0);
 
-    return day.getTime() <= today.getTime();
+    return day.getTime() < today.getTime();
   }
 
   /**
@@ -63,7 +65,7 @@ export default function DateSelector(): JSX.Element {
 
   return (
     <div className="DateSelector p-md py-sm">
-      <p>
+      <p className="DateSelector__current">
         <span className="font-sm">Today</span>
         <br />
         <span className="font-bold">{humanDate(current)}</span>
@@ -72,7 +74,7 @@ export default function DateSelector(): JSX.Element {
       <ul className="DateSelector__dates m-0">
         {thisWeek().map((day) => (
           <li key={day.valueOf()} className={classNames(day)}>
-            <button type="button" onClick={() => setCurrent(day)}>
+            <button type="button" className="button" onClick={() => setCurrent(day)}>
               <span className="uppercase font-sm font-bold leading-loose">
                 {humanDayOfWeek(day)}
               </span>
@@ -84,16 +86,16 @@ export default function DateSelector(): JSX.Element {
       </ul>
 
       <div className="DateSelector__navigate">
-        <button type="button" className="button" onClick={viewPrev}>
-          Prev
+        <button type="button" className="button button--icon" onClick={viewPrev}>
+          <Prev />
         </button>
 
-        <button type="button" className="button" onClick={viewNext}>
-          Next
+        <button type="button" className="button button--icon ml-sm" onClick={viewNext}>
+          <Next />
         </button>
       </div>
 
-      <div className="DateSelector__today">
+      <div className="DateSelector__today ml-md">
         <button type="button" className="button" onClick={viewToday}>
           Today
         </button>

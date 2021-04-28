@@ -10,6 +10,7 @@ esbuild.build({
   bundle: true,
   sourcemap: true,
   inject: ['./resources/js/process-shim.js'],
+  // external: ['*.woff'],
   define: {
     'process.env.NODE_ENV': '\"development\"',
     'process.env.NODE_DEBUG': false,
@@ -19,6 +20,7 @@ esbuild.build({
     if (error) console.error('build failed:', error);
     else console.log('build succeeded:', result);
   } },
+  loader: { '.woff': 'binary', '.woff2': 'binary' },
   outfile: 'public/index.js',
   plugins: [sassPlugin()],
 }).catch(e => {

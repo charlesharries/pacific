@@ -1,0 +1,19 @@
+:root {
+  $width: 960px;
+
+  --font: 'Lato';
+  --width: $width;
+}
+
+// Mixins for media
+@mixin mobile {
+  @media (max-width: #{$desktop-width - 1}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$desktop-width}) {
+    @content;
+  }
+}

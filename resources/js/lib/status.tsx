@@ -8,7 +8,7 @@ type StatusContext = {
 };
 
 function useProvideStatus(): StatusContext {
-  const [status, setStatus] = useState<Status>('idle');
+  const [status, setStatus] = useState<Status>('loading');
 
   return { status, setStatus };
 }

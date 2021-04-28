@@ -11,7 +11,7 @@ esbuild.build({
   sourcemap: true,
   inject: ['./resources/js/process-shim.js'],
   define: {
-    'process.env.NODE_ENV': 'development',
+    'process.env.NODE_ENV': '\"development\"',
     'process.env.NODE_DEBUG': false,
     'global': 'window',
   },

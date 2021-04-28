@@ -1,21 +1,22 @@
 {{ template "app" . }}
 
 {{ define "main" }}
-<h1>Login page</h1>
+<div class="p-md">
+<h1>Login</h1>
+  <form method="POST" action="/login" class="w-sm stack">
+    <input type='hidden' name='csrf_token' value='{{ .CSRFToken }}'>
 
-<form method="POST" action="/login">
-  <input type='hidden' name='csrf_token' value='{{ .CSRFToken }}'>
+    <div class="stack stack--xs">
+      <label for="email">Email</label>
+      <input type="email" name="email">
+    </div>
 
-  <div>
-    <label for="email">Email</label>
-    <input type="email" name="email">
-  </div>
+    <div class="stack stack--xs">
+      <label for="password">Password</label>
+      <input type="password" name="password">
+    </div>
 
-  <div>
-    <label for="password">Password</label>
-    <input type="password" name="password">
-  </div>
-
-  <button type="submit">Login</button>
-</form>
+    <button class="button" type="submit">Login</button>
+  </form>
+</div>
 {{ end }}

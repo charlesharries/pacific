@@ -1,0 +1,25 @@
+button {
+  padding: 0;
+  border: none;
+  appearance: none;
+  background-color: transparent;
+  color: inherit;
+}
+
+.button {
+  padding: 5px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: var(--border);
+  }
+
+  &.button--icon {
+    display: inline-flex;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,28 @@
+.stack {
+  display: flex;
+  flex-direction: column;
+
+  & > * {
+    margin: 0;
+  }
+
+  & > * + * {
+    margin-top: 1rem;
+  }
+}
+
+.stack--xs {
+  & > * + * { margin-top: 0.5rem; }
+}
+
+.stack--sm {
+  & > * + * { margin-top: 1rem; }
+}
+
+.stack--md {
+  & > * + * { margin-top: 2rem; }
+}
+
+.stack--lg {
+  & > * + * { margin-top: 4rem; }
+}

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useStatus } from '../lib/status';
 import { dateString, StateUpdater, useDate } from '../lib/date';
 
-const emptyEditor: string = '';
+const emptyEditor = '';
 
 type ApiNote = {
   id: number;
@@ -25,7 +25,7 @@ export default function useLoadEditor(setValue: StateUpdater<string>): void {
       .then((r) => r.json())
       .then((r: ApiNote) => {
         if (r.content) {
-          setValue(JSON.parse(r.content) as string);
+          setValue(r.content);
         }
 
         setStatus('success');

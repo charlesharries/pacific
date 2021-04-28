@@ -1,0 +1,32 @@
+html {
+  font-size: 62.5%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  display: flex;
+  font-family: var(--font);
+  font-size: 1.6rem;
+  font-weight: normal;
+  font-style: normal;
+  letter-spacing: 0;
+  background-color: var(--background);
+  color: var(--text);
+  overscroll-behavior: none;
+}
+
+.Nav {
+  width: 20%;
+}
+
+.Main {
+  flex: 1;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}

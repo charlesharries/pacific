@@ -27,12 +27,12 @@ func (app *application) routes() http.Handler {
 
 	app.newMiddlewareGroup(mux, dynamicMiddleware, func(r *middlewareGroup) {
 		r.Get("/", app.home)
-		r.Get("/:date", app.home)
 		r.Get("/register", app.registerForm)
 		r.Post("/register", app.register)
 		r.Get("/login", app.loginForm)
 		r.Post("/login", app.login)
 		r.Post("/logout", app.logout)
+		r.Get("/:date", app.home)
 	})
 
 	app.newMiddlewareGroup(mux, dynamicMiddleware.Append(app.requireAuthentication), func(r *middlewareGroup) {

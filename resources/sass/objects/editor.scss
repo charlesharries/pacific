@@ -16,14 +16,15 @@
       & + ul,
       & + ol,
       & + button {
-        margin-top: 1rem;
+        margin-top: 1.5rem;
       }
     }
 
     h1,
     h2,
     h3 {
-      & + * {
+      & + *,
+      & + button + * {
         margin-top: 0;
       }
     }
@@ -44,7 +45,8 @@
       margin-bottom: 0.3rem;
     }
 
-    & > * + .checkbox_list {
+    & > * + .checkbox_list,
+    & > .checkbox_list + * {
       margin-top: 0.75rem;
     }
   }

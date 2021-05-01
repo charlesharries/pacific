@@ -41,6 +41,12 @@ func main() {
 		log.Fatal("Couldn't load env file.")
 	}
 
+	// If we're in production, we want to save the time that the
+	// server starts, to version our assets.
+	if os.Getenv("ENV") == "production" {
+		os.Setenv("CACHE_KEY", fmt.Sprint(time.Now().Unix()))
+	}
+
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 

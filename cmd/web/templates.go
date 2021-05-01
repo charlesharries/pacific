@@ -14,6 +14,7 @@ type templateData struct {
 	IsAuthenticated bool
 	Flash           string
 	User            TemplateUser
+	CacheKey        string
 }
 
 // TemplateUser is the data representation of a single user rendered

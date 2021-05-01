@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"runtime/debug"
 
 	"github.com/charlesharries/pacific/pkg/models"
@@ -42,6 +43,11 @@ func (app *application) addDefaultData(td *templateData, r *http.Request) *templ
 	// td.CurrentYear = time.Now().Year()
 	td.Flash = app.session.PopString(r, "flash")
 	td.IsAuthenticated = app.isAuthenticated(r)
+	td.CacheKey = fmt.Sprint(timestamp())
+
+	if len(os.Getenv("CACHE_KEY")) > 0 {
+		td.CacheKey = os.Getenv("CACHE_KEY")
+	}
 
 	if app.session.Exists(r, "authenticatedUser") {
 		td.User = app.session.Get(r, "authenticatedUser").(TemplateUser)

@@ -5,7 +5,7 @@
 <head>
   <title>Pacific</title>
   <meta name="csrf_token" content="{{ .CSRFToken }}" />
-  <link rel="stylesheet" href="/static/index.css?t={{ timestamp }}" />
+  <link rel="stylesheet" href="/static/index.css?t={{ .CacheKey }}" />
 </head>
 
 <body>
@@ -17,7 +17,7 @@
     {{ template "main" . }}
   </main>
 
-  <script type="module" src="/static/index.js?t={{ timestamp }}"></script>
+  <script type="module" src="/static/index.js?t={{ .CacheKey }}"></script>
 </body>
 
 </html>

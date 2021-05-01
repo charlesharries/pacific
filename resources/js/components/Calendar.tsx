@@ -51,9 +51,9 @@ function Month({ days }: MonthProps): JSX.Element {
 
   return (
     <div className="mt-sm">
-      <h4 className="align-right">
+      <h5 className="align-right">
         {humanMonth(days[0])} {days[0].getFullYear()}
-      </h4>
+      </h5>
       <table className="Calendar mt-xs">
         {weeks.map((week) => (
           <tr className={`Calendar__week ${weekHasDay(week, current) ? 'is-current' : ''}`}>

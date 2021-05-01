@@ -68,7 +68,7 @@ export function dateString(date: Date): string {
   return `${year}-${prefix(month)}-${prefix(day)}`;
 }
 
-export function humanDate(date: Date): string {
+export function humanMonth(date: Date): string {
   const months = [
     'January',
     'February',
@@ -83,11 +83,15 @@ export function humanDate(date: Date): string {
     'November',
     'December',
   ];
+
+  return months[date.getMonth()];
+}
+
+export function humanDate(date: Date): string {
   const year = date.getFullYear();
-  const month = date.getMonth();
   const day = date.getDate();
 
-  return `${day} ${months[month]} ${year}`;
+  return `${day} ${humanMonth(date)} ${year}`;
 }
 
 export function humanDayOfWeek(date: Date): string {

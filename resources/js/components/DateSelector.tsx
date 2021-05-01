@@ -49,8 +49,6 @@ export default function DateSelector(): JSX.Element {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    console.log({ day, today });
-
     return day.getTime() < today.getTime();
   }
 

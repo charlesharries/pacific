@@ -1,4 +1,16 @@
 .font-sm { font-size: 1.4rem; }
+.font-xs { font-size: 1.2rem; }
 .font-bold { font-weight: 700; }
 .uppercase { text-transform: uppercase; }
 .leading-loose { letter-spacing: 0.1rem; }
+
+.align-left { text-align: left; }
+.align-right { text-align: right; }
+.align-center { text-align: center; }
+
+h4,
+.text-h4 {
+  font-size: 1.2rem;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+}

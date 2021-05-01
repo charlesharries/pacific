@@ -1,6 +1,6 @@
 {{ define "nav" }}
   <nav class="Nav">
-    <ul class="Nav__list p-md mt-md">
+    <ul class="Nav__list p-md m-0">
       <li>
         <a class="Nav__link" href="/">Home</a>
       </li>
@@ -22,6 +22,9 @@
         </li>
       {{ end }}
     </ul>
+
+    <div class="Nav__calendar" id="calendar">
+    </div>
 
     <div class="Nav__user p-md font-sm">
       {{ if not .User.Email }}

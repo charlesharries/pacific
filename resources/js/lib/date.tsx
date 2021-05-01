@@ -9,6 +9,7 @@ type DateContext = {
   viewPrev: () => void;
   viewToday: () => void;
   setCurrent: StateUpdater<Date>;
+  setViewing: StateUpdater<Date>;
 };
 
 /**
@@ -56,7 +57,7 @@ function useProvideDate(): DateContext {
     setViewing(today);
   }
 
-  return { current, viewing, viewNext, viewPrev, setCurrent, viewToday };
+  return { current, viewing, viewNext, viewPrev, setCurrent, setViewing, viewToday };
 }
 
 export function dateString(date: Date): string {

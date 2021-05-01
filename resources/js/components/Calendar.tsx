@@ -1,4 +1,5 @@
 import ReactDOM from 'react-dom';
+import useWeeks, { CalendarDay } from '../hooks/useWeeks';
 import { humanMonth, useDate, isSameDay } from '../lib/date';
 
 interface MonthProps {
@@ -9,13 +10,16 @@ interface DayProps {
   day: Date | null;
 }
 
-type CalendarDay = Date | null;
-
 function Day({ day }: DayProps): JSX.Element {
-  const { current, setCurrent } = useDate();
+  const { current, setCurrent, setViewing } = useDate();
 
   if (!day) {
     return <td className="Calendar__day" />;
+  }
+
+  function goTo(d: Date): void {
+    setCurrent(d);
+    setViewing(d);
   }
 
   const classes = [
@@ -30,7 +34,7 @@ function Day({ day }: DayProps): JSX.Element {
 
   return (
     <td className={classes}>
-      <button type="button" onClick={() => setCurrent(day)}>
+      <button type="button" onClick={() => goTo(day)}>
         {day.getDate()}
       </button>
     </td>
@@ -39,29 +43,7 @@ function Day({ day }: DayProps): JSX.Element {
 
 function Month({ days }: MonthProps): JSX.Element {
   const { current } = useDate();
-  let currentWeek = 0;
-
-  function weeks() {
-    const ds: CalendarDay[][] = [[]];
-    const firstDayOfWeek = 1;
-
-    // Pre-fill first week
-    for (let i = 0; i < days[0].getDay() - firstDayOfWeek; i += 1) {
-      ds[currentWeek].push(null);
-    }
-
-    // Fill the rest of the month
-    days.forEach((day) => {
-      if (ds[currentWeek].length >= 7) {
-        currentWeek += 1;
-      }
-
-      ds[currentWeek] = ds[currentWeek] || [];
-      ds[currentWeek].push(day);
-    });
-
-    return ds;
-  }
+  const weeks = useWeeks(days);
 
   function weekHasDay(week: CalendarDay[], day: Date) {
     return week.some((d) => d && isSameDay(d, day));
@@ -73,7 +55,7 @@ function Month({ days }: MonthProps): JSX.Element {
         {humanMonth(days[0])} {days[0].getFullYear()}
       </h4>
       <table className="Calendar mt-xs">
-        {weeks().map((week) => (
+        {weeks.map((week) => (
           <tr className={`Calendar__week ${weekHasDay(week, current) ? 'is-current' : ''}`}>
             {week.map((day) => (
               <Day day={day} />
@@ -109,9 +91,7 @@ function Calendar(): JSX.Element {
   return (
     <div className="p-md">
       <Month days={getMonth(offsetMonth(-1))} />
-
       <Month days={getMonth(current)} />
-
       <Month days={getMonth(offsetMonth(1))} />
     </div>
   );

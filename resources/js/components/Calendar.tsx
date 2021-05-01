@@ -55,13 +55,18 @@ function Month({ days }: MonthProps): JSX.Element {
         {humanMonth(days[0])} {days[0].getFullYear()}
       </h5>
       <table className="Calendar mt-xs">
-        {weeks.map((week) => (
-          <tr className={`Calendar__week ${weekHasDay(week, current) ? 'is-current' : ''}`}>
-            {week.map((day) => (
-              <Day day={day} />
-            ))}
-          </tr>
-        ))}
+        <tbody>
+          {weeks.map((week, i) => (
+            <tr
+              key={`${humanMonth(days[0])}-${i}`}
+              className={`Calendar__week ${weekHasDay(week, current) ? 'is-current' : ''}`}
+            >
+              {week.map((day, di) => (
+                <Day key={`${i}-${di}`} day={day} />
+              ))}
+            </tr>
+          ))}
+        </tbody>
       </table>
     </div>
   );

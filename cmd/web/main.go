@@ -69,7 +69,7 @@ func main() {
 	}
 
 	session := sessions.New([]byte(os.Getenv("APP_SECRET")))
-	session.Lifetime = 24 * time.Hour
+	session.Lifetime = 24 * time.Hour * 30 // 30 days
 	gob.Register(TemplateUser{})
 
 	app := &application{

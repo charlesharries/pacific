@@ -29,9 +29,9 @@ type User struct {
 type Note struct {
 	gorm.Model
 	ID        int `json:"id"`
-	UserID    int `json:"user_id"`
+	UserID    int `json:"user_id" gorm:"uniqueIndex:notes_date_user_id_idx"`
 	User      User
-	Date      time.Time `gorm:"uniqueIndex"`
+	Date      time.Time `gorm:"uniqueIndex:notes_date_user_id_idx"`
 	UpdatedAt time.Time `json:"updated_at"`
 	Content   string    `json:"content"`
 }

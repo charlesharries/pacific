@@ -70,8 +70,8 @@ func (app *application) updateNote(w http.ResponseWriter, r *http.Request) {
 	}
 
 	app.gorm.Clauses(clause.OnConflict{
-		Columns:   []clause.Column{{Name: "date"}},
-		DoUpdates: clause.AssignmentColumns([]string{"content", "user_id"}),
+		Columns:   []clause.Column{{Name: "user_id"}, {Name: "date"}},
+		DoUpdates: clause.AssignmentColumns([]string{"content"}),
 	}).Create(&models.Note{
 		Date:    date,
 		Content: form.Get("content"),

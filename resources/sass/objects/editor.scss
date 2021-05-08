@@ -56,6 +56,10 @@
     & > .checkbox_list + * {
       margin-top: 0.75rem;
     }
+
+    :not(pre) code {
+      font-size: 1.3rem;
+    }
   }
 }
 

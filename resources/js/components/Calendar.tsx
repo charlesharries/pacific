@@ -42,7 +42,7 @@ function Day({ day }: DayProps): JSX.Element {
 }
 
 function Month({ days }: MonthProps): JSX.Element {
-  const { current } = useDate();
+  const { current, viewing } = useDate();
   const weeks = useWeeks(days);
 
   function weekHasDay(week: CalendarDay[], day: Date) {
@@ -59,7 +59,7 @@ function Month({ days }: MonthProps): JSX.Element {
           {weeks.map((week, i) => (
             <tr
               key={`${humanMonth(days[0])}-${i}`}
-              className={`Calendar__week ${weekHasDay(week, current) ? 'is-current' : ''}`}
+              className={`Calendar__week ${weekHasDay(week, viewing) ? 'is-current' : ''}`}
             >
               {week.map((day, di) => (
                 <Day key={`${i}-${di}`} day={day} />

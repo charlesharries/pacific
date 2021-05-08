@@ -61,6 +61,7 @@ func main() {
 		errorLog.Fatal(err)
 	}
 
+	gorm.AutoMigrate(&models.User{})
 	gorm.AutoMigrate(&models.Note{})
 
 	templateCache, err := newTemplateCache("./resources/views")

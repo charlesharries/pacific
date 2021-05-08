@@ -6,7 +6,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "node build.js",
-    "build": "node build.production.js"
+    "build": "node build.production.js",
+    "build:server": "go build -o ./bin/web ./cmd/web",
+    "start:server": "./bin/web"
   },
   "devDependencies": {
     "@types/node": "^14.14.10",

@@ -1,5 +1,6 @@
 .DS_Store
 .env
+bin/
 database/*.sqlite
 node_modules
 public/index.js

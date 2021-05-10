@@ -1,9 +1,9 @@
 import { DateProvider } from '../lib/date';
 import { StatusProvider } from '../lib/status';
 import DateSelector from './DateSelector';
-import Editor from './Editor';
 import '../../sass/app.scss';
 import Calendar from './Calendar';
+import Content from './Content';
 
 export function App(): JSX.Element {
   return (
@@ -14,7 +14,7 @@ export function App(): JSX.Element {
 
           <DateSelector />
 
-          <Editor />
+          <Content />
         </div>
       </StatusProvider>
     </DateProvider>

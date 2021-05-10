@@ -116,7 +116,18 @@ func (app *application) apiNote(w http.ResponseWriter, note *models.Note) {
 }
 
 func (app *application) apiTodos(w http.ResponseWriter, todos []*models.Todo) {
-	js, err := json.Marshal(todos)
+	var res []*models.TodoResource
+
+	for _, todo := range todos {
+		res = append(res, &models.TodoResource{
+			ID:        todo.ID,
+			Date:      todo.Date,
+			Completed: todo.Completed,
+			Content:   todo.Content,
+		})
+	}
+
+	js, err := json.Marshal(res)
 	if err != nil {
 		app.serverError(w, err)
 		return

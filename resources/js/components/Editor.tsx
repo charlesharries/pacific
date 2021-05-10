@@ -16,11 +16,5 @@ export default function Editor(): JSX.Element | null {
     return null;
   }
 
-  return (
-    <section className="Editor">
-      <div className="Editor__inner">
-        <RichEditor defaultValue={value} onChange={(v) => setValue(v)} theme={theme} />
-      </div>
-    </section>
-  );
+  return <RichEditor defaultValue={value} onChange={(v) => setValue(v)} theme={theme} />;
 }

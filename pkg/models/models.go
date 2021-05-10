@@ -36,3 +36,12 @@ type Note struct {
 	UpdatedAt time.Time `json:"updated_at"`
 	Content   string    `json:"content"`
 }
+
+type Todo struct {
+	gorm.Model
+	UserID    int `json:"user_id" gorm:"index"`
+	User      User
+	Date      time.Time
+	Completed bool   `json:"completed"`
+	Content   string `json:"content"`
+}

@@ -114,3 +114,14 @@ func (app *application) apiNote(w http.ResponseWriter, note *models.Note) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(js)
 }
+
+func (app *application) apiTodos(w http.ResponseWriter, todos []*models.Todo) {
+	js, err := json.Marshal(todos)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(js)
+}

@@ -38,6 +38,9 @@ func (app *application) routes() http.Handler {
 	app.newMiddlewareGroup(mux, dynamicMiddleware.Append(app.requireAuthentication), func(r *middlewareGroup) {
 		r.Get("/notes/:date", app.getNote)
 		r.Post("/notes/:date", app.updateNote)
+
+		r.Get("/todos/:date", app.getTodos)
+		r.Post("/todos/:date", app.updateTodo)
 	})
 
 	// Note routes

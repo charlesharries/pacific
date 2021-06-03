@@ -63,7 +63,6 @@ func main() {
 
 	gorm.AutoMigrate(&models.User{})
 	gorm.AutoMigrate(&models.Note{})
-	gorm.AutoMigrate(&models.Todo{})
 
 	templateCache, err := newTemplateCache("./resources/views")
 	if err != nil {

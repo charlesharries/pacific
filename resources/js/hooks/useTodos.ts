@@ -18,7 +18,7 @@ export default function useTodos(): Todo[] {
     })
       .then((r) => r.json())
       .then((r: Todo[]) => {
-        setTodos(r);
+        setTodos(r || []);
       });
   }, [current]);
 

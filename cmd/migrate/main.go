@@ -12,7 +12,7 @@ import (
 func main() {
 	m, err := migrate.New(
 		"file://./migrations",
-		"sqlite3:///Users/charlesharries/Sites/pacific/database/new.sqlite",
+		"sqlite3://database/new.sqlite",
 	)
 
 	m.Log = Logger{}

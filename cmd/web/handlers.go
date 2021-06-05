@@ -27,23 +27,23 @@ func (app *application) getNote(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		app.serverError(w, err)
+		app.errorJSONResponse(w, http.StatusInternalServerError, "server error")
 		return
 	}
 
-	app.apiNote(w, note)
+	app.writeJSON(w, 200, envelope{"note": note}, nil)
 }
 
 func (app *application) updateNote(w http.ResponseWriter, r *http.Request) {
 	date, err := app.readDateParam(r)
 	if err != nil {
-		app.notFound(w)
+		app.notFoundJSONResponse(w)
 		return
 	}
 
 	err = r.ParseForm()
 	if err != nil {
-		app.clientError(w, http.StatusBadRequest)
+		app.badRequestJSONResponse(w, err)
 		return
 	}
 
@@ -51,7 +51,7 @@ func (app *application) updateNote(w http.ResponseWriter, r *http.Request) {
 
 	form.Required("content")
 	if !form.Valid() {
-		app.clientError(w, http.StatusBadRequest)
+		app.badRequestJSONResponse(w, err)
 		return
 	}
 
@@ -63,9 +63,9 @@ func (app *application) updateNote(w http.ResponseWriter, r *http.Request) {
 
 	err = app.models.Notes.Upsert(note)
 	if err != nil {
-		app.serverError(w, err)
+		app.serverErrorJSONResponse(w, err)
 		return
 	}
 
-	app.apiOK(w)
+	app.writeJSON(w, 200, envelope{"error": false, "message": "ok"}, nil)
 }

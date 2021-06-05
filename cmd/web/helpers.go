@@ -12,9 +12,12 @@ import (
 	"time"
 
 	"github.com/charlesharries/pacific/pkg/data"
-	"github.com/charlesharries/pacific/pkg/models"
 	"github.com/justinas/nosurf"
 )
+
+// envelope is for returning JSON resources with appropriately-named
+// keys.
+type envelope map[string]interface{}
 
 // serverError logs the stack trace to the errorLog and then returns a
 // generic 500 error to the user.
@@ -44,7 +47,6 @@ func (app *application) addDefaultData(td *templateData, r *http.Request) *templ
 	}
 
 	td.CSRFToken = nosurf.Token(r)
-	// td.CurrentYear = time.Now().Year()
 	td.Flash = app.session.PopString(r, "flash")
 	td.IsAuthenticated = app.isAuthenticated(r)
 	td.CacheKey = fmt.Sprint(timestamp())
@@ -119,28 +121,6 @@ func (app *application) apiNote(w http.ResponseWriter, note *data.Note) {
 	w.Write(js)
 }
 
-func (app *application) apiTodos(w http.ResponseWriter, todos []*models.Todo) {
-	var res []*models.TodoResource
-
-	for _, todo := range todos {
-		res = append(res, &models.TodoResource{
-			ID:        todo.ID,
-			Date:      todo.Date,
-			Completed: todo.Completed,
-			Content:   todo.Content,
-		})
-	}
-
-	js, err := json.Marshal(res)
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(js)
-}
-
 func (app *application) readDateParam(r *http.Request) (time.Time, error) {
 	d := r.URL.Query().Get(":date")
 
@@ -155,4 +135,25 @@ func (app *application) readDateParam(r *http.Request) (time.Time, error) {
 	}
 
 	return date, nil
+}
+
+// writeJSON writes a JSON response to the given io.Writer, with the
+// given status and headers.
+func (app *application) writeJSON(w http.ResponseWriter, status int, data envelope, headers http.Header) error {
+	js, err := json.MarshalIndent(data, "", "\t")
+	if err != nil {
+		return err
+	}
+
+	js = append(js, '\n')
+
+	for key, value := range headers {
+		w.Header()[key] = value
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
+	w.Write(js)
+
+	return nil
 }

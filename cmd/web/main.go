@@ -10,6 +10,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/charlesharries/pacific/pkg/data"
 	"github.com/charlesharries/pacific/pkg/models"
 	mysqlite "github.com/charlesharries/pacific/pkg/models/sqlite"
 	"github.com/golangcollege/sessions"
@@ -28,6 +29,7 @@ type application struct {
 	session       *sessions.Session
 	templateCache map[string]*template.Template
 	gorm          *gorm.DB
+	models        data.Models
 	users         interface {
 		Insert(string, string) error
 		Authenticate(string, string) (int, error)
@@ -61,9 +63,6 @@ func main() {
 		errorLog.Fatal(err)
 	}
 
-	gorm.AutoMigrate(&models.User{})
-	gorm.AutoMigrate(&models.Note{})
-
 	templateCache, err := newTemplateCache("./resources/views")
 	if err != nil {
 		errorLog.Fatal(err)
@@ -78,6 +77,7 @@ func main() {
 		infoLog:       infoLog,
 		session:       session,
 		templateCache: templateCache,
+		models:        data.NewModels(db),
 		users:         &mysqlite.UserModel{DB: db},
 		gorm:          gorm,
 	}

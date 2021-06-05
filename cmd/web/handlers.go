@@ -1,13 +1,11 @@
 package main
 
 import (
+	"errors"
 	"net/http"
-	"regexp"
-	"time"
 
+	"github.com/charlesharries/pacific/pkg/data"
 	"github.com/charlesharries/pacific/pkg/forms"
-	"github.com/charlesharries/pacific/pkg/models"
-	"gorm.io/gorm/clause"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -16,48 +14,36 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 
 // getNote gets the note for the given date (if any).
 func (app *application) getNote(w http.ResponseWriter, r *http.Request) {
-	d := r.URL.Query().Get(":date")
-
-	reg := regexp.MustCompile(`\d{4}-\d{2}-\d{2}`)
-	if !reg.MatchString(d) {
+	date, err := app.readDateParam(r)
+	if err != nil {
 		app.notFound(w)
 		return
 	}
 
-	date, err := time.Parse("2006-01-02", d)
+	note, err := app.models.Notes.Get(date, app.currentUser(r).ID)
 	if err != nil {
-		app.serverError(w, err)
+		if errors.Is(err, data.ErrRecordNotFound) {
+			app.apiOK(w)
+			return
+		}
+
+		app.errorJSONResponse(w, http.StatusInternalServerError, "server error")
 		return
 	}
 
-	var note = &models.Note{}
-
-	app.gorm.First(&note, &models.Note{
-		Date:   date,
-		UserID: app.currentUser(r).ID,
-	})
-
-	app.apiNote(w, note)
+	app.writeJSON(w, 200, envelope{"note": note}, nil)
 }
 
 func (app *application) updateNote(w http.ResponseWriter, r *http.Request) {
-	d := r.URL.Query().Get(":date")
-
-	reg := regexp.MustCompile(`\d{4}-\d{2}-\d{2}`)
-	if !reg.MatchString(d) {
-		app.notFound(w)
-		return
-	}
-
-	date, err := time.Parse("2006-01-02", d)
+	date, err := app.readDateParam(r)
 	if err != nil {
-		app.serverError(w, err)
+		app.notFoundJSONResponse(w)
 		return
 	}
 
 	err = r.ParseForm()
 	if err != nil {
-		app.clientError(w, http.StatusBadRequest)
+		app.badRequestJSONResponse(w, err)
 		return
 	}
 
@@ -65,18 +51,21 @@ func (app *application) updateNote(w http.ResponseWriter, r *http.Request) {
 
 	form.Required("content")
 	if !form.Valid() {
-		app.clientError(w, http.StatusBadRequest)
+		app.badRequestJSONResponse(w, err)
 		return
 	}
 
-	app.gorm.Clauses(clause.OnConflict{
-		Columns:   []clause.Column{{Name: "user_id"}, {Name: "date"}},
-		DoUpdates: clause.AssignmentColumns([]string{"content"}),
-	}).Create(&models.Note{
+	note := &data.Note{
 		Date:    date,
 		Content: form.Get("content"),
 		UserID:  app.currentUser(r).ID,
-	})
+	}
 
-	app.apiOK(w)
+	err = app.models.Notes.Upsert(note)
+	if err != nil {
+		app.serverErrorJSONResponse(w, err)
+		return
+	}
+
+	app.writeJSON(w, 200, envelope{"error": false, "message": "ok"}, nil)
 }

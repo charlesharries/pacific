@@ -4,8 +4,8 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/charlesharries/pacific/pkg/data"
 	"github.com/charlesharries/pacific/pkg/forms"
-	"github.com/charlesharries/pacific/pkg/models"
 )
 
 // registerForm displays the registration form.
@@ -33,9 +33,9 @@ func (app *application) register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Save the user
-	err = app.users.Insert(form.Get("email"), form.Get("password"))
+	err = app.models.Users.Insert(form.Get("email"), form.Get("password"))
 	if err != nil {
-		if errors.Is(err, models.ErrDuplicateEmail) {
+		if errors.Is(err, data.ErrDuplicateEmail) {
 			form.Errors.Add("email", "Address is already in use.")
 			app.render(w, r, "register.tmpl", &templateData{Form: form})
 		} else {
@@ -66,9 +66,9 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 
 	form := forms.New(r.PostForm)
 
-	id, err := app.users.Authenticate(form.Get("email"), form.Get("password"))
+	id, err := app.models.Users.Authenticate(form.Get("email"), form.Get("password"))
 	if err != nil {
-		if errors.Is(err, models.ErrInvalidCredentials) {
+		if errors.Is(err, data.ErrInvalidCredentials) {
 			form.Errors.Add("generic", "Email or password is incorrect.")
 			app.render(w, r, "login.tmpl", &templateData{Form: form})
 		} else {
@@ -79,14 +79,14 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Fetch the user from the DB
-	user, err := app.users.Get(id)
+	user, err := app.models.Users.Get(id)
 	if err != nil {
 		app.serverError(w, err)
 		return
 	}
 
 	// Save the user to the session
-	app.session.Put(r, "authenticatedUser", &TemplateUser{
+	app.session.Put(r, "auth.user", &TemplateUser{
 		ID:    user.ID,
 		Email: user.Email,
 	})
@@ -97,7 +97,7 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 
 // logout clears the user's session and logs them out.
 func (app *application) logout(w http.ResponseWriter, r *http.Request) {
-	app.session.Remove(r, "authenticatedUser")
+	app.session.Remove(r, "auth.user")
 
 	app.session.Put(r, "flash", "You've been logged out.")
 	http.Redirect(w, r, "/", http.StatusSeeOther)

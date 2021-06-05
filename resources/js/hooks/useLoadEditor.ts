@@ -10,6 +10,10 @@ type ApiNote = {
   date: string;
 };
 
+interface ApiResponse {
+  note: ApiNote;
+}
+
 export default function useLoadEditor(setValue: StateUpdater<string>): void {
   const { setStatus } = useStatus();
   const { current } = useDate();
@@ -23,9 +27,9 @@ export default function useLoadEditor(setValue: StateUpdater<string>): void {
       credentials: 'include',
     })
       .then((r) => r.json())
-      .then((r: ApiNote) => {
-        if (r.content) {
-          setValue(r.content);
+      .then((r: ApiResponse) => {
+        if (r.note?.content) {
+          setValue(r.note.content);
         }
 
         setStatus('success');

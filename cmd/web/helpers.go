@@ -3,11 +3,15 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
+	"regexp"
 	"runtime/debug"
+	"time"
 
+	"github.com/charlesharries/pacific/pkg/data"
 	"github.com/charlesharries/pacific/pkg/models"
 	"github.com/justinas/nosurf"
 )
@@ -105,7 +109,7 @@ func (app *application) apiOK(w http.ResponseWriter) {
 	w.Write(js)
 }
 
-func (app *application) apiNote(w http.ResponseWriter, note *models.Note) {
+func (app *application) apiNote(w http.ResponseWriter, note *data.Note) {
 	js, err := json.Marshal(note)
 	if err != nil {
 		app.serverError(w, err)
@@ -135,4 +139,20 @@ func (app *application) apiTodos(w http.ResponseWriter, todos []*models.Todo) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(js)
+}
+
+func (app *application) readDateParam(r *http.Request) (time.Time, error) {
+	d := r.URL.Query().Get(":date")
+
+	reg := regexp.MustCompile(`\d{4}-\d{2}-\d{2}`)
+	if !reg.MatchString(d) {
+		return time.Time{}, errors.New("invalid date")
+	}
+
+	date, err := time.Parse("2006-01-02", d)
+	if err != nil {
+		return time.Time{}, err
+	}
+
+	return date, nil
 }

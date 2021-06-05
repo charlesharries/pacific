@@ -8,9 +8,10 @@ interface MonthProps {
 
 interface DayProps {
   day: Date | null;
+  isWeekend: boolean;
 }
 
-function Day({ day }: DayProps): JSX.Element {
+function Day({ day, isWeekend }: DayProps): JSX.Element {
   const { current, setCurrent, setViewing } = useDate();
 
   if (!day) {
@@ -28,6 +29,7 @@ function Day({ day }: DayProps): JSX.Element {
     'font-xs',
     isSameDay(day, current) ? 'is-current' : '',
     isSameDay(day, new Date()) ? 'is-today' : '',
+    isWeekend ? 'is-weekend' : '',
   ]
     .filter((d) => !!d)
     .join(' ');
@@ -62,7 +64,7 @@ function Month({ days }: MonthProps): JSX.Element {
               className={`Calendar__week ${weekHasDay(week, viewing) ? 'is-current' : ''}`}
             >
               {week.map((day, di) => (
-                <Day key={`${i}-${di}`} day={day} />
+                <Day key={`${i}-${di}`} day={day} isWeekend={[5, 6].includes(di)} />
               ))}
             </tr>
           ))}

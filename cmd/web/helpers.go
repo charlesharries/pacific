@@ -49,8 +49,8 @@ func (app *application) addDefaultData(td *templateData, r *http.Request) *templ
 		td.CacheKey = os.Getenv("CACHE_KEY")
 	}
 
-	if app.session.Exists(r, "authenticatedUser") {
-		td.User = app.session.Get(r, "authenticatedUser").(TemplateUser)
+	if app.session.Exists(r, "auth.user") {
+		td.User = app.session.Get(r, "auth.user").(TemplateUser)
 	}
 
 	return td
@@ -87,7 +87,7 @@ func (app *application) isAuthenticated(r *http.Request) bool {
 
 // currentUser returns the currently logged-in user.
 func (app *application) currentUser(r *http.Request) TemplateUser {
-	return app.session.Get(r, "authenticatedUser").(TemplateUser)
+	return app.session.Get(r, "auth.user").(TemplateUser)
 }
 
 func (app *application) apiOK(w http.ResponseWriter) {

@@ -20,7 +20,7 @@ type templateData struct {
 // TemplateUser is the data representation of a single user rendered
 // in our templates.
 type TemplateUser struct {
-	ID    int
+	ID    int64
 	Email string
 }
 

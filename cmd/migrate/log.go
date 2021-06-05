@@ -5,7 +5,7 @@ import "log"
 type Logger struct{}
 
 func (l Logger) Printf(format string, v ...interface{}) {
-	log.Println(v...)
+	log.Printf(format, v...)
 }
 
 func (l Logger) Verbose() bool {

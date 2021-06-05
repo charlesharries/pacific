@@ -71,17 +71,17 @@ func noSurf(next http.Handler) http.Handler {
 
 func (app *application) authenticate(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		exists := app.session.Exists(r, "authenticatedUser")
+		exists := app.session.Exists(r, "auth.user")
 		if !exists {
 			next.ServeHTTP(w, r)
 			return
 		}
 
-		currentUser := app.session.Get(r, "authenticatedUser").(TemplateUser)
+		currentUser := app.session.Get(r, "auth.user").(TemplateUser)
 
-		user, err := app.users.Get(currentUser.ID)
+		user, err := app.models.Users.Get(currentUser.ID)
 		if errors.Is(err, models.ErrNoRecord) || !user.Active {
-			app.session.Remove(r, "authenticatedUser")
+			app.session.Remove(r, "auth.user")
 			next.ServeHTTP(w, r)
 			return
 		} else if err != nil {

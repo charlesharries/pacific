@@ -10,5 +10,6 @@
     "noUnusedLocals": false,
     "esModuleInterop": true,
     "downlevelIteration": true,
+    "target": "ES6",
   }
 }

@@ -44,7 +44,7 @@ function Day({ day, isWeekend }: DayProps): JSX.Element {
 }
 
 function Month({ days }: MonthProps): JSX.Element {
-  const { current, viewing } = useDate();
+  const { viewing } = useDate();
   const weeks = useWeeks(days);
 
   function weekHasDay(week: CalendarDay[], day: Date) {
@@ -64,7 +64,7 @@ function Month({ days }: MonthProps): JSX.Element {
               className={`Calendar__week ${weekHasDay(week, viewing) ? 'is-current' : ''}`}
             >
               {week.map((day, di) => (
-                <Day key={`${i}-${di}`} day={day} isWeekend={[5, 6].includes(di)} />
+                <Day key={`${i}-${di}`} day={day} isWeekend={day ? [0, 6].includes(day.getDay()) : false} />
               ))}
             </tr>
           ))}
@@ -104,8 +104,9 @@ function Calendar(): JSX.Element {
   );
 }
 
-export default function CalendarWrapper(): JSX.Element {
+export default function CalendarWrapper(): JSX.Element | null {
   const calendarRoot = document.getElementById('calendar');
+  if (!calendarRoot) return null;
 
-  return ReactDOM.createPortal(<Calendar />, calendarRoot as Element);
+  return ReactDOM.createPortal(<Calendar />, calendarRoot);
 }
